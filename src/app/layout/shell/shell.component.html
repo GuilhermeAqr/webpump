@@ -1,0 +1,165 @@
+<aside
+  class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+>
+  <div class="flex flex-col">
+    <div class="h-16 px-space-md flex items-center gap-space-sm bg-surface-container">
+      <span
+        class="h-8 w-8 rounded bg-primary text-on-primary flex items-center justify-center shadow-sm"
+      >
+        <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">pets</span>
+      </span>
+      <div class="flex flex-col">
+        <span class="font-title-md text-title-md text-on-surface font-bold tracking-tight leading-none">WebPump</span>
+        <span class="font-label-md text-label-md text-primary font-semibold leading-none mt-1">Vet Clinical Suite</span>
+      </div>
+    </div>
+
+    <div class="p-space-md">
+      <div class="p-space-sm rounded-lg bg-surface-container-highest flex items-center justify-between">
+        <div class="flex items-center gap-space-xs">
+          <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+          <span class="font-label-code text-label-code text-on-surface">Bomba Conectada</span>
+        </div>
+        <span class="font-label-md text-label-md text-on-surface-variant font-medium">Online</span>
+      </div>
+    </div>
+
+    <div class="px-space-md pt-space-xs pb-space-sm">
+      <span class="font-label-md text-label-md text-secondary uppercase tracking-wider font-semibold">Fluxo Clínico</span>
+    </div>
+
+    <nav class="flex flex-col gap-space-xs px-space-md">
+      <a
+        routerLink="/paciente-vet"
+        routerLinkActive="bg-primary-container text-on-primary-container font-semibold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
+      >
+        <div class="flex items-center gap-space-sm">
+          <span class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center font-label-code text-label-code text-on-surface-variant">1</span>
+          <span class="font-label-lg text-label-lg">Paciente Vet</span>
+        </div>
+        <span class="material-symbols-outlined text-[18px]">pets</span>
+      </a>
+
+      <a
+        routerLink="/modalidade-de-infusao"
+        routerLinkActive="bg-primary-container text-on-primary-container font-semibold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
+      >
+        <div class="flex items-center gap-space-sm">
+          <span class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center font-label-code text-label-code text-on-surface-variant">2</span>
+          <span class="font-label-lg text-label-lg">Modalidade de Infusão</span>
+        </div>
+        <span class="material-symbols-outlined text-[18px]">water_drop</span>
+      </a>
+
+      <a
+        routerLink="/protocolo-farmacologico"
+        routerLinkActive="bg-primary-container text-on-primary-container font-semibold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
+      >
+        <div class="flex items-center gap-space-sm">
+          <span class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center font-label-code text-label-code text-on-surface-variant">3</span>
+          <span class="font-label-lg text-label-lg">Protocolo Farmacológico</span>
+        </div>
+        <span class="material-symbols-outlined text-[18px]">medication</span>
+      </a>
+
+      <a
+        routerLink="/protocolo-farmacologico"
+        routerLinkActive="bg-primary-container text-on-primary-container font-semibold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
+      >
+        <div class="flex items-center gap-space-sm">
+          <span class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center font-label-code text-label-code text-on-surface-variant">4</span>
+          <span class="font-label-lg text-label-lg">Simulador & Monitor</span>
+        </div>
+        <span class="material-symbols-outlined text-[18px]">vital_signs</span>
+      </a>
+    </nav>
+  </div>
+
+  <div class="p-space-md flex flex-col gap-space-sm bg-surface-container-low">
+    <div class="p-space-sm rounded-lg bg-surface-container-high text-on-surface-variant">
+      <div class="flex items-center gap-space-xs text-primary mb-1">
+        <span class="material-symbols-outlined text-[16px]">verified_user</span>
+        <span class="font-label-code text-label-code">LGPD Compliant</span>
+      </div>
+      <p class="font-label-md text-label-md">Dados anonimizados segundo a Lei 13.709/2018.</p>
+    </div>
+
+    <button
+      type="button"
+      (click)="sair()"
+      class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors w-full text-left"
+    >
+      <div class="flex items-center gap-space-sm">
+        <span class="material-symbols-outlined text-[18px]">policy</span>
+        <span class="font-label-lg text-label-lg">Acesso & LGPD (Sair)</span>
+      </div>
+      <span class="material-symbols-outlined text-[18px]">arrow_forward_ios</span>
+    </button>
+  </div>
+</aside>
+
+<div class="pl-72 flex flex-col min-h-screen">
+  <header
+    class="fixed top-0 left-72 right-0 h-16 bg-surface/85 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)] px-space-lg flex items-center justify-between"
+  >
+    <div class="flex items-center gap-space-md">
+      <div class="flex items-center gap-space-xs py-1 px-space-sm rounded-full bg-surface-container-high">
+        <span class="w-2 h-2 rounded-full bg-primary"></span>
+        <span class="font-label-code text-label-code text-on-surface-variant">Simulador Ativo • Bomba Conectada</span>
+      </div>
+      <div class="hidden xl:flex items-center gap-space-sm text-secondary">
+        <span class="font-label-md text-label-md">Hardware Syringe & Peristaltic Virtual Engine v2.4</span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-space-md">
+      <div class="flex flex-col text-right hidden sm:flex">
+        <span class="font-label-md text-label-md text-on-surface font-semibold leading-tight">{{ vetNome }}</span>
+        <span class="font-label-code text-label-code text-on-surface-variant">{{ crmv }}</span>
+      </div>
+      <button
+        type="button"
+        (click)="sair()"
+        title="Sair da sessão clínica"
+        class="w-8 h-8 rounded-full bg-primary flex items-center justify-center hover:bg-primary-container transition-colors"
+      >
+        <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="relative pt-16 flex-1 w-full px-space-lg py-space-md">
+    <div class="flex flex-col w-full">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  <footer class="w-full bg-surface-container-low mt-auto">
+    <div class="w-full px-space-lg py-space-md flex flex-col md:flex-row items-center justify-between gap-space-md">
+      <div class="flex flex-col sm:flex-row items-center gap-space-md text-center sm:text-left">
+        <div class="flex items-center gap-space-xs">
+          <span class="material-symbols-outlined text-[18px] text-error">warning</span>
+          <span class="font-label-md text-label-md text-on-surface-variant font-medium">
+            Aviso Clínico: Ferramenta de apoio. Toda dosagem requer prescrição veterinária presencial com verificação dupla.
+          </span>
+        </div>
+      </div>
+      <div class="flex items-center gap-space-lg">
+        <a
+          routerLink="/acesso-lgpd"
+          class="font-label-md text-label-md text-primary hover:text-on-surface transition-colors font-medium"
+          >LGPD Lei 13.709/2018</a
+        >
+        <span class="font-label-code text-label-code text-secondary">© 2024 WebPump Vet</span>
+      </div>
+    </div>
+  </footer>
+</div>

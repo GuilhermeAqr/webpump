@@ -1,0 +1,525 @@
+<!-- Stepper Header -->
+<div class="w-full bg-surface-container-low rounded-xl p-space-md mb-space-lg shadow-sm">
+  <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+    <div class="flex flex-col">
+      <div class="flex items-center gap-space-xs mb-1">
+        <span class="px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-code text-label-code">Módulo Crítico</span>
+        <span class="font-label-md text-label-md text-secondary font-medium">Protocolo Multimodal CRI (Taxa de Infusão Contínua)</span>
+      </div>
+      <h1 class="font-headline-lg text-headline-lg text-on-surface">Protocolo Farmacológico & Simulador de Bomba</h1>
+    </div>
+    <div class="flex items-center gap-space-sm">
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant font-label-md text-label-md">
+          <span class="w-2 h-2 rounded-full bg-surface-tint"></span>
+          1. Paciente
+        </div>
+        <span class="text-secondary text-xs">/</span>
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant font-label-md text-label-md">
+          <span class="w-2 h-2 rounded-full bg-surface-tint"></span>
+          2. Modalidade
+        </div>
+        <span class="text-secondary text-xs">/</span>
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant font-label-md text-label-md">
+          <span class="w-2 h-2 rounded-full bg-surface-tint"></span>
+          3. Diluição
+        </div>
+        <span class="text-secondary text-xs">/</span>
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-on-primary animate-pulse"></span>
+          4. Protocolo & Bomba (Ativo)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mini Telemetry Strip -->
+  <div class="mt-space-md pt-space-sm flex flex-wrap items-center justify-between gap-y-2 text-on-surface-variant font-label-code text-label-code bg-surface-container-lowest rounded-lg p-space-sm">
+    <div class="flex items-center gap-space-sm">
+      <span class="text-secondary">Paciente:</span>
+      <span class="font-bold text-on-surface">Thor (Canino, Boxer)</span>
+      <span class="px-2 py-0.5 rounded bg-surface-container font-semibold text-primary">Peso: {{ patientWeight }} kg</span>
+    </div>
+    <div class="flex items-center gap-space-md">
+      <div>
+        <span class="text-secondary">Solução Base:</span>
+        <span class="font-semibold text-on-surface"> Ringer Lactato ({{ bagVolume }} mL)</span>
+      </div>
+      <div>
+        <span class="text-secondary">Bolsa VTBI:</span>
+        <span class="font-semibold text-on-surface">{{ bagVolume.toFixed(1) }} mL</span>
+      </div>
+      <div class="flex items-center gap-1 text-primary">
+        <span class="material-symbols-outlined text-[16px]">sync_alt</span>
+        <span>Sincronizado c/ Bomba V-900</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Grid: 7 cols (Drugs Selection) & 5 cols (Pump Simulator LCD) -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg w-full">
+  <!-- LEFT PANEL: Pharmacological Configuration (7 cols) -->
+  <div class="xl:col-span-7 flex flex-col gap-space-md">
+    <!-- Panel Header & Global Volume Configuration -->
+    <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+      <div class="flex items-center gap-space-sm">
+        <div class="w-8 h-8 rounded-lg bg-primary-fixed flex items-center justify-center text-on-primary-fixed">
+          <span class="material-symbols-outlined text-[20px]">science</span>
+        </div>
+        <div>
+          <h2 class="font-title-md text-title-md text-on-surface">Composição da Solução (Infusão Multimodal - MLK+)</h2>
+          <p class="font-label-md text-label-md text-secondary">Ajuste dosagens e concentrações por kg de massa corpórea</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="font-label-md text-label-md text-secondary" for="bag-volume-select">Bolsa de Diluição:</label>
+        <select
+          id="bag-volume-select"
+          (change)="onBagVolumeChange($event)"
+          class="bg-surface-container-high text-on-surface font-label-code text-label-code px-3 py-1.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+        >
+          <option value="250" [selected]="bagVolume === 250">250 mL (Padrão)</option>
+          <option value="500" [selected]="bagVolume === 500">500 mL</option>
+          <option value="100" [selected]="bagVolume === 100">100 mL (Microbolsa)</option>
+          <option value="1000" [selected]="bagVolume === 1000">1000 mL</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Drug Slots Container -->
+    <div class="flex flex-col gap-space-md">
+      <!-- Slot 1: Morfina / Opioide -->
+      <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden transition-all duration-200">
+        <div class="flex items-center justify-between mb-space-sm">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-code text-label-code">1</span>
+            <span class="font-label-code text-label-code text-secondary uppercase font-semibold">Opioide Principal</span>
+            <span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Analgesia Central</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-primary font-label-md text-label-md font-semibold">
+            <span class="material-symbols-outlined text-[16px]">check_circle</span>
+            Compatível em Solução
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-space-sm items-end">
+          <div class="md:col-span-4">
+            <label class="block font-label-md text-label-md text-secondary mb-1">Fármaco Selecionado</label>
+            <select
+              (change)="onDrug1TypeChange($event)"
+              class="w-full bg-surface-container text-on-surface font-title-md text-title-md rounded-lg px-space-sm py-2 focus:ring-2 focus:ring-primary focus:outline-none"
+            >
+              <option value="morfina" [selected]="drug1Type === 'morfina'">Morfina 10 mg/mL</option>
+              <option value="fentanil" [selected]="drug1Type === 'fentanil'">Fentanil 0.05 mg/mL</option>
+              <option value="metadona" [selected]="drug1Type === 'metadona'">Metadona 10 mg/mL</option>
+            </select>
+          </div>
+          <div class="md:col-span-3">
+            <label class="block font-label-md text-label-md text-secondary mb-1">Dose Alvo (CRI)</label>
+            <div class="relative flex items-center">
+              <input
+                type="number"
+                min="0.01"
+                step="0.05"
+                [value]="drug1Dose"
+                (input)="onDrug1DoseChange($event)"
+                class="w-full bg-surface-container-high text-on-surface font-title-md text-title-md font-bold px-3 py-2 rounded-lg pr-20 focus:ring-2 focus:ring-primary focus:outline-none"
+              />
+              <span class="absolute right-2 font-label-code text-label-code text-secondary select-none">mg/kg/h</span>
+            </div>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block font-label-md text-label-md text-secondary mb-1">Concentração</label>
+            <div class="bg-surface-container py-2 px-3 rounded-lg text-on-surface font-label-code text-label-code">
+              <span>{{ drug1ConcDecimals }}</span> <span class="text-secondary text-xs">mg/mL</span>
+            </div>
+          </div>
+          <div class="md:col-span-3 bg-surface-container-low p-2 rounded-lg">
+            <span class="block font-label-md text-label-md text-secondary">Aspirar para a Bolsa:</span>
+            <div class="flex items-baseline gap-1 mt-0.5">
+              <span class="font-headline-md text-headline-md font-bold text-primary">{{ drug1Vol.toFixed(2) }}</span>
+              <span class="font-label-code text-label-code text-on-surface-variant font-bold">mL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slot 2: Lidocaína 2% -->
+      <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden transition-all duration-200">
+        <div class="flex items-center justify-between mb-space-sm">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-code text-label-code">2</span>
+            <span class="font-label-code text-label-code text-secondary uppercase font-semibold">Anestésico Local Sistêmico</span>
+            <span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Antiarrítmico & Analgésico</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-primary font-label-md text-label-md font-semibold">
+            <span class="material-symbols-outlined text-[16px]">check_circle</span>
+            Compatível em Solução
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-space-sm items-end">
+          <div class="md:col-span-4">
+            <label class="block font-label-md text-label-md text-secondary mb-1">Fármaco Selecionado</label>
+            <select disabled class="w-full bg-surface-container-high text-on-surface font-title-md text-title-md rounded-lg px-space-sm py-2 cursor-not-allowed">
+              <option selected value="lidocaina">Lidocaína 2% s/ vaso</option>
+            </select>
+          </div>
+          <div class="md:col-span-3">
+            <label class="block font-label-md text-label-md text-secondary mb-1">Dose Alvo (CRI)</label>
+            <div class="relative flex items-center">
+              <input
+                type="number"
+                min="0.1"
+                step="0.1"
+                [value]="drug2Dose"
+                (input)="onDrug2DoseChange($event)"
+                class="w-full bg-surface-container-high text-on-surface font-title-md text-title-md font-bold px-3 py-2 rounded-lg pr-20 focus:ring-2 focus:ring-primary focus:outline-none"
+              />
+              <span class="absolute right-2 font-label-code text-label-code text-secondary select-none">mg/kg/h</span>
+            </div>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block font-label-md text-label-md text-secondary mb-1">Concentração</label>
+            <div class="bg-surface-container py-2 px-3 rounded-lg text-on-surface font-label-code text-label-code">
+              <span>{{ drug2Conc.toFixed(1) }}</span> <span class="text-secondary text-xs">mg/mL</span>
+            </div>
+          </div>
+          <div class="md:col-span-3 bg-surface-container-low p-2 rounded-lg">
+            <span class="block font-label-md text-label-md text-secondary">Aspirar para a Bolsa:</span>
+            <div class="flex items-baseline gap-1 mt-0.5">
+              <span class="font-headline-md text-headline-md font-bold text-primary">{{ drug2Vol.toFixed(2) }}</span>
+              <span class="font-label-code text-label-code text-on-surface-variant font-bold">mL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slot 3: Cetamina -->
+      <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden transition-all duration-200">
+        <div class="flex items-center justify-between mb-space-sm">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-code text-label-code">3</span>
+            <span class="font-label-code text-label-code text-secondary uppercase font-semibold">Antagonista NMDA</span>
+            <span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Anti-hiperalgésico</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-primary font-label-md text-label-md font-semibold">
+            <span class="material-symbols-outlined text-[16px]">check_circle</span>
+            Compatível em Solução
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-space-sm items-end">
+          <div class="md:col-span-4">
+            <label class="block font-label-md text-label-md text-secondary mb-1">Fármaco Selecionado</label>
+            <select
+              (change)="onDrug3TypeChange($event)"
+              class="w-full bg-surface-container text-on-surface font-title-md text-title-md rounded-lg px-space-sm py-2 focus:ring-2 focus:ring-primary focus:outline-none"
+            >
+              <option value="cetamina_10" [selected]="drug3Type === 'cetamina_10'">Cetamina 10% (100 mg/mL)</option>
+              <option value="cetamina_5" [selected]="drug3Type === 'cetamina_5'">Cetamina 5% (50 mg/mL)</option>
+            </select>
+          </div>
+          <div class="md:col-span-3">
+            <label class="block font-label-md text-label-md text-secondary mb-1">Dose Alvo (CRI)</label>
+            <div class="relative flex items-center">
+              <input
+                type="number"
+                min="0.05"
+                step="0.05"
+                [value]="drug3Dose"
+                (input)="onDrug3DoseChange($event)"
+                class="w-full bg-surface-container-high text-on-surface font-title-md text-title-md font-bold px-3 py-2 rounded-lg pr-20 focus:ring-2 focus:ring-primary focus:outline-none"
+              />
+              <span class="absolute right-2 font-label-code text-label-code text-secondary select-none">mg/kg/h</span>
+            </div>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block font-label-md text-label-md text-secondary mb-1">Concentração</label>
+            <div class="bg-surface-container py-2 px-3 rounded-lg text-on-surface font-label-code text-label-code">
+              <span>{{ drug3Conc.toFixed(1) }}</span> <span class="text-secondary text-xs">mg/mL</span>
+            </div>
+          </div>
+          <div class="md:col-span-3 bg-surface-container-low p-2 rounded-lg">
+            <span class="block font-label-md text-label-md text-secondary">Aspirar para a Bolsa:</span>
+            <div class="flex items-baseline gap-1 mt-0.5">
+              <span class="font-headline-md text-headline-md font-bold text-primary">{{ drug3Vol.toFixed(2) }}</span>
+              <span class="font-label-code text-label-code text-on-surface-variant font-bold">mL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slot 4: Adjuvante Opcional -->
+      <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden transition-all duration-300">
+        <div class="flex items-center justify-between mb-space-sm">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-label-code text-label-code">4</span>
+            <span class="font-label-code text-label-code text-secondary uppercase font-semibold">Adjuvante Opcional</span>
+            <span
+              class="px-2 py-0.5 rounded-full font-label-md text-label-md"
+              [class.bg-secondary-fixed]="isSlot4Active"
+              [class.text-on-secondary-fixed]="isSlot4Active"
+              [class.bg-surface-container-highest]="!isSlot4Active"
+              [class.text-on-surface-variant]="!isSlot4Active"
+            >{{ isSlot4Active ? 'Ativo' : 'Inativo' }}</span>
+          </div>
+          <div class="flex items-center gap-space-sm">
+            <button
+              type="button"
+              (click)="toggleSlot4()"
+              class="flex items-center gap-1 px-3 py-1 rounded-lg bg-surface-container-high hover:bg-surface-container text-on-surface font-label-md text-label-md transition-colors"
+            >
+              <span class="material-symbols-outlined text-[16px]">{{ isSlot4Active ? 'remove_circle_outline' : 'add_circle_outline' }}</span>
+              <span>{{ isSlot4Active ? 'Remover Fármaco 4' : 'Adicionar Fármaco 4' }}</span>
+            </button>
+          </div>
+        </div>
+
+        @if (isSlot4Active) {
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-space-sm items-end transition-opacity duration-200">
+            <div class="md:col-span-4">
+              <label class="block font-label-md text-label-md text-secondary mb-1">Fármaco Adjuvante</label>
+              <select
+                (change)="onDrug4TypeChange($event)"
+                class="w-full bg-surface-container text-on-surface font-title-md text-title-md rounded-lg px-space-sm py-2 focus:ring-2 focus:ring-primary focus:outline-none"
+              >
+                <option value="dexmedetomidina" [selected]="drug4Type === 'dexmedetomidina'">Dexmedetomidina (0.5 mg/mL)</option>
+                <option value="midazolam" [selected]="drug4Type === 'midazolam'">Midazolam (5.0 mg/mL)</option>
+                <option value="butorfanol" [selected]="drug4Type === 'butorfanol'">Butorfanol (10.0 mg/mL)</option>
+                <option value="furosemida" [selected]="drug4Type === 'furosemida'">Furosemida (10.0 mg/mL)</option>
+              </select>
+            </div>
+            <div class="md:col-span-3">
+              <label class="block font-label-md text-label-md text-secondary mb-1">Dose Alvo (CRI)</label>
+              <div class="relative flex items-center">
+                <input
+                  type="number"
+                  min="0.1"
+                  step="0.1"
+                  [value]="drug4Dose"
+                  (input)="onDrug4DoseChange($event)"
+                  class="w-full bg-surface-container-high text-on-surface font-title-md text-title-md font-bold px-3 py-2 rounded-lg pr-20 focus:ring-2 focus:ring-primary focus:outline-none"
+                />
+                <span class="absolute right-2 font-label-code text-label-code text-secondary select-none">{{ drug4Unit }}</span>
+              </div>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block font-label-md text-label-md text-secondary mb-1">Concentração</label>
+              <div class="bg-surface-container py-2 px-3 rounded-lg text-on-surface font-label-code text-label-code">
+                <span>{{ drug4Conc.toFixed(1) }}</span> <span class="text-secondary text-xs">mg/mL</span>
+              </div>
+            </div>
+            <div class="md:col-span-3 bg-surface-container-low p-2 rounded-lg">
+              <span class="block font-label-md text-label-md text-secondary">Aspirar para a Bolsa:</span>
+              <div class="flex items-baseline gap-1 mt-0.5">
+                <span class="font-headline-md text-headline-md font-bold text-primary">{{ drug4Vol.toFixed(2) }}</span>
+                <span class="font-label-code text-label-code text-on-surface-variant font-bold">mL</span>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <div class="py-4 text-center text-secondary font-label-md text-label-md">
+            Slot 4 desativado. Nenhuma dose adicional será computada para este canal.
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Preparation Summary Strip -->
+    <div class="bg-primary-container text-on-primary-container p-space-md rounded-xl flex flex-col md:flex-row items-center justify-between gap-space-md shadow-sm">
+      <div class="flex items-center gap-space-sm">
+        <span class="material-symbols-outlined text-[24px]">biotech</span>
+        <div>
+          <span class="font-title-md text-title-md font-bold block">Resumo do Preparo na Seringa/Bolsa</span>
+          <span class="font-label-md text-label-md opacity-90">Retirar <b>{{ totalDrugsVol.toFixed(2) }} mL</b> da bolsa de soro antes de adicionar os analgésicos concentrados.</span>
+        </div>
+      </div>
+      <div class="text-right">
+        <span class="font-label-code text-label-code uppercase tracking-wider block opacity-80">Volume Fármacos Total:</span>
+        <span class="font-headline-md text-headline-md font-bold">{{ totalDrugsVol.toFixed(2) }} mL</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL: Virtual Veterinary Syringe & Peristaltic Pump HUD (5 cols) -->
+  <div class="xl:col-span-5 flex flex-col gap-space-md">
+    <!-- Virtual Pump Enclosure (Hardware Simulator) -->
+    <div class="bg-[#171F22] text-[#f2fbff] rounded-2xl p-space-md shadow-xl flex flex-col justify-between relative overflow-hidden">
+      <!-- Hardware Top Bezel -->
+      <div class="flex items-center justify-between border-b border-[#2a3235] pb-space-sm mb-space-sm">
+        <div class="flex items-center gap-space-xs">
+          <span class="w-3 h-3 rounded-full bg-primary-fixed animate-pulse"></span>
+          <span class="font-label-code text-label-code text-[#cee7ed] tracking-wider uppercase font-semibold">WebPump V-Precision VET</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-[#2a3235] text-[#cee7ed]">CANINO {{ patientWeight }}kg</span>
+          <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]"></div>
+        </div>
+      </div>
+
+      <!-- Digital LCD Screen -->
+      <div class="bg-[#0b1012] rounded-xl p-space-md border border-[#2a3235] relative shadow-inner">
+        <div class="flex items-center justify-between text-[#748B91] font-label-code text-label-code pb-2 border-b border-[#1c2528]">
+          <div class="flex items-center gap-1.5">
+            <span [class]="lcdDotClass"></span>
+            <span [class]="lcdStatusClass">{{ lcdStatusText }}</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs">MODO: TAXA CONTÍNUA</span>
+            <span class="font-mono text-xs text-[#cee7ed]">CH-01</span>
+          </div>
+        </div>
+
+        <!-- LCD Core Readout: ML/H Rate -->
+        <div class="py-4 flex flex-col items-center justify-center relative">
+          <span class="font-label-code text-label-code text-[#748B91] uppercase tracking-wider mb-1">Taxa de Infusão Primária</span>
+          <div class="flex items-baseline gap-2">
+            <span class="font-display-lg text-display-lg text-white font-mono font-bold tracking-tight">{{ lcdFlowRateDisplay }}</span>
+            <span class="font-headline-md text-headline-md text-[#cee7ed] font-semibold">mL/h</span>
+          </div>
+          <div class="flex items-center gap-2 mt-2 px-3 py-1 rounded-full bg-[#171f22] border border-[#2a3235]">
+            <span class="material-symbols-outlined text-[16px] text-emerald-400 animate-bounce">water_drop</span>
+            <span class="font-label-code text-label-code text-[#cee7ed]">Câmara de Gotejamento Virtual: <strong>{{ macroDrops }} gts/min</strong></span>
+          </div>
+        </div>
+
+        <!-- LCD Metric Grid -->
+        <div class="grid grid-cols-3 gap-2 pt-3 border-t border-[#1c2528] text-center">
+          <div class="bg-[#171f22]/70 rounded p-2">
+            <span class="block font-label-md text-label-md text-[#748B91]">VTBI (Total)</span>
+            <span class="font-mono font-bold text-white text-base">{{ bagVolume.toFixed(1) }}</span>
+            <span class="text-[10px] text-[#748B91] block">mL</span>
+          </div>
+          <div class="bg-[#171f22]/70 rounded p-2">
+            <span class="block font-label-md text-label-md text-[#748B91]">VI (Infundido)</span>
+            <span class="font-mono font-bold text-emerald-400 text-base">34.8</span>
+            <span class="text-[10px] text-[#748B91] block">mL</span>
+          </div>
+          <div class="bg-[#171f22]/70 rounded p-2">
+            <span class="block font-label-md text-label-md text-[#748B91]">Restante</span>
+            <span class="font-mono font-bold text-[#cee7ed] text-base">07:36:20</span>
+            <span class="text-[10px] text-[#748B91] block">hh:mm:ss</span>
+          </div>
+        </div>
+
+        <!-- Progress Bar inside LCD -->
+        <div class="mt-3 w-full bg-[#1c2528] rounded-full h-1.5 overflow-hidden">
+          <div class="bg-emerald-400 h-1.5 rounded-full transition-all duration-300" style="width: 14%"></div>
+        </div>
+      </div>
+
+      <!-- Equivalent Gravity Drip Calculations Cards -->
+      <div class="grid grid-cols-2 gap-space-sm my-space-md">
+        <div class="bg-[#1c2528] p-space-sm rounded-xl border border-[#2a3235]">
+          <div class="flex items-center gap-1.5 text-[#cee7ed] mb-1">
+            <span class="material-symbols-outlined text-[16px]">grain</span>
+            <span class="font-label-code text-label-code font-bold">Macrogotas (20 gts/mL)</span>
+          </div>
+          <div class="flex items-baseline gap-1">
+            <span class="font-display-metric text-display-metric font-mono font-bold text-white">{{ macroDrops }}</span>
+            <span class="font-label-code text-label-code text-[#748B91]">gotas / min</span>
+          </div>
+          <span class="text-[11px] text-[#748B91] block mt-0.5">1 gota a cada {{ (60 / macroDrops).toFixed(1) }} seg</span>
+        </div>
+        <div class="bg-[#1c2528] p-space-sm rounded-xl border border-[#2a3235]">
+          <div class="flex items-center gap-1.5 text-[#cee7ed] mb-1">
+            <span class="material-symbols-outlined text-[16px]">opacity</span>
+            <span class="font-label-code text-label-code font-bold">Microgotas (60 gts/mL)</span>
+          </div>
+          <div class="flex items-baseline gap-1">
+            <span class="font-display-metric text-display-metric font-mono font-bold text-white">{{ microDrops }}</span>
+            <span class="font-label-code text-label-code text-[#748B91]">microgts / min</span>
+          </div>
+          <span class="text-[11px] text-[#748B91] block mt-0.5">1 microgota a cada {{ (60 / microDrops).toFixed(1) }} seg</span>
+        </div>
+      </div>
+
+      <!-- Hardware Physical Push Buttons & Keypad Control Matrix -->
+      <div class="flex flex-col gap-space-sm">
+        <div class="grid grid-cols-3 gap-2">
+          <button
+            type="button"
+            (click)="pumpPurgeAction()"
+            class="bg-[#2a3235] hover:bg-[#344a50] text-[#f2fbff] font-label-code text-label-code py-2.5 px-2 rounded-lg flex flex-col items-center justify-center transition-all active:translate-y-0.5"
+          >
+            <span class="material-symbols-outlined text-[20px] text-[#cee7ed]">fast_forward</span>
+            <span>PURGE</span>
+          </button>
+          <button
+            type="button"
+            (click)="pumpBolusAction()"
+            class="bg-[#2a3235] hover:bg-[#344a50] text-[#f2fbff] font-label-code text-label-code py-2.5 px-2 rounded-lg flex flex-col items-center justify-center transition-all active:translate-y-0.5"
+          >
+            <span class="material-symbols-outlined text-[20px] text-amber-400">bolt</span>
+            <span>BOLO RÁPIDO</span>
+          </button>
+          <button
+            type="button"
+            (click)="pumpMuteAction()"
+            class="bg-[#2a3235] hover:bg-[#344a50] text-[#f2fbff] font-label-code text-label-code py-2.5 px-2 rounded-lg flex flex-col items-center justify-center transition-all active:translate-y-0.5"
+          >
+            <span [class]="muteIconClass">{{ muteIcon }}</span>
+            <span>{{ muteLabel }}</span>
+          </button>
+        </div>
+        <!-- Main Hardware Execution Controls (START / PAUSE / STOP) -->
+        <div class="grid grid-cols-2 gap-2 mt-1">
+          <button type="button" (click)="pumpToggleStart()" [class]="startBtnClass">
+            <span class="material-symbols-outlined text-[22px]">play_circle</span>
+            <span>{{ startBtnLabel }}</span>
+          </button>
+          <button
+            type="button"
+            (click)="pumpStopAction()"
+            class="bg-rose-900 hover:bg-rose-800 text-white font-title-md text-title-md font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all active:translate-y-0.5"
+          >
+            <span class="material-symbols-outlined text-[22px]">stop_circle</span>
+            <span>PARADA TOTAL</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clinical Prescription Export & Anesthetic Form Card -->
+    <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[20px] text-primary">picture_as_pdf</span>
+          <span class="font-title-md text-title-md font-bold text-on-surface">Documentação e Validação</span>
+        </div>
+        <span class="font-label-code text-label-code text-secondary">CFMV / CRMV-SP</span>
+      </div>
+      <p class="font-label-md text-label-md text-on-surface-variant">
+        Gere a prescrição completa da solução de CRI detalhada para rotulagem da bolsa e incorporação instantânea ao prontuário cirúrgico.
+      </p>
+      <div class="flex items-center gap-2 mt-1">
+        <button
+          type="button"
+          (click)="exportPDF()"
+          class="flex-1 bg-primary hover:bg-surface-tint text-on-primary py-2.5 px-space-md rounded-lg font-label-lg text-label-lg font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
+        >
+          <span class="material-symbols-outlined text-[18px]">download</span>
+          <span>Exportar Prescrição & Ficha (PDF)</span>
+        </button>
+        <button
+          type="button"
+          (click)="printLabel()"
+          title="Imprimir Etiqueta da Bolsa"
+          class="bg-surface-container hover:bg-surface-container-high text-on-surface p-2.5 rounded-lg transition-colors"
+        >
+          <span class="material-symbols-outlined text-[20px]">print</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast de exportação (equivalente ao alertBox dinâmico do script original) -->
+@if (showExportToast) {
+  <div class="fixed bottom-6 right-6 bg-surface-container-lowest text-on-surface border border-primary p-space-md rounded-xl shadow-2xl z-50 flex items-center gap-space-sm">
+    <span class="material-symbols-outlined text-emerald-600 text-[24px]">task_alt</span>
+    <div class="flex flex-col">
+      <span class="font-title-md text-title-md font-bold">Relatório Gerado com Sucesso!</span>
+      <span class="font-label-md text-label-md text-secondary">Prescrição e parâmetros anestésicos exportados em PDF assinado digitalmente.</span>
+    </div>
+  </div>
+}

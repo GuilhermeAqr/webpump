@@ -1,0 +1,366 @@
+<div class="flex flex-col gap-space-lg w-full max-w-7xl mx-auto pb-space-2xl">
+  <!-- Top Bar: Stepper & Patient Summary Pill -->
+  <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md bg-surface-container-lowest p-space-md lg:p-space-lg rounded-xl shadow-sm">
+    <div class="flex flex-col gap-space-xs">
+      <div class="flex items-center gap-space-xs">
+        <span class="font-label-code text-label-code text-primary uppercase tracking-wider">Etapa 3 de 4</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+        <span class="font-label-md text-label-md text-on-surface-variant font-medium">Configuração Terapêutica</span>
+      </div>
+      <div class="flex items-center gap-space-xs mt-1">
+        <div class="flex items-center gap-1.5">
+          <span class="w-7 h-7 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label-code text-label-code font-bold">✓</span>
+          <span class="w-8 h-1 rounded-full bg-primary-container"></span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-7 h-7 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label-code text-label-code font-bold">✓</span>
+          <span class="w-8 h-1 rounded-full bg-primary"></span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-code text-label-code font-bold ring-4 ring-primary-fixed">3</span>
+          <span class="w-8 h-1 rounded-full bg-surface-container-high"></span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-7 h-7 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-label-code text-label-code">4</span>
+        </div>
+      </div>
+    </div>
+    <!-- Fixed Patient Quickstrip -->
+    <div class="flex items-center gap-space-md p-space-sm pl-space-md bg-surface-container rounded-xl">
+      <div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center shadow-sm">
+        <span class="material-symbols-outlined text-primary text-[24px]">pets</span>
+      </div>
+      <div class="flex flex-col min-w-0 pr-space-sm">
+        <div class="flex items-center gap-space-xs">
+          <span class="font-title-md text-title-md text-on-surface font-bold truncate">Thor</span>
+          <span class="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-code text-label-code">Canino</span>
+        </div>
+        <span class="font-label-md text-label-md text-on-surface-variant truncate">8.5 kg • Adulto (4 anos) • ASA II</span>
+      </div>
+      <div class="hidden sm:flex flex-col pl-space-sm border-l border-outline-variant/30 text-right">
+        <span class="font-label-code text-label-code text-primary font-bold">Dose Base</span>
+        <span class="font-label-md text-label-md text-secondary">Taxa calculada p/ 8.5kg</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Header & Carousel Controls Header -->
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+    <div class="flex flex-col">
+      <span class="font-label-code text-label-code text-secondary uppercase tracking-widest">Protocolos de Vet Infusão</span>
+      <h1 class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">Modalidade de Infusão</h1>
+      <p class="font-body-md text-body-md text-on-surface-variant mt-1">Selecione uma das modalidades clínicas validadas para carregar automaticamente a matriz de diluição.</p>
+    </div>
+    <!-- Interactive Carousel Arrows & Indicator -->
+    <div class="flex items-center gap-space-sm self-end md:self-auto">
+      <button
+        type="button"
+        (click)="prevSlide()"
+        aria-label="Modalidade Anterior"
+        class="w-10 h-10 rounded-lg bg-surface-container-lowest hover:bg-surface-container-high text-on-surface flex items-center justify-center shadow-sm transition-transform active:scale-95"
+      >
+        <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+      </button>
+      <div class="flex items-center gap-1.5 px-space-sm">
+        <button
+          type="button"
+          (click)="goToSlide(0)"
+          aria-label="Ver Fluidoterapia"
+          class="h-2 rounded-full transition-all duration-300"
+          [class.w-6]="boundedIndex === 0"
+          [class.bg-primary]="boundedIndex === 0"
+          [class.w-2.5]="boundedIndex !== 0"
+          [class.bg-outline-variant]="boundedIndex !== 0"
+        ></button>
+        <button
+          type="button"
+          (click)="goToSlide(1)"
+          aria-label="Ver MLK"
+          class="h-2 rounded-full transition-all duration-300"
+          [class.w-6]="boundedIndex === 1"
+          [class.bg-primary]="boundedIndex === 1"
+          [class.w-2.5]="boundedIndex !== 1"
+          [class.bg-outline-variant]="boundedIndex !== 1"
+        ></button>
+        <button
+          type="button"
+          (click)="goToSlide(2)"
+          aria-label="Ver FLK"
+          class="h-2 rounded-full transition-all duration-300"
+          [class.w-6]="boundedIndex === 2"
+          [class.bg-primary]="boundedIndex === 2"
+          [class.w-2.5]="boundedIndex !== 2"
+          [class.bg-outline-variant]="boundedIndex !== 2"
+        ></button>
+      </div>
+      <button
+        type="button"
+        (click)="nextSlide()"
+        aria-label="Próxima Modalidade"
+        class="w-10 h-10 rounded-lg bg-surface-container-lowest hover:bg-surface-container-high text-on-surface flex items-center justify-center shadow-sm transition-transform active:scale-95"
+      >
+        <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Carousel Viewport -->
+  <div class="relative w-full overflow-hidden rounded-xl">
+    <div class="flex transition-transform duration-500 ease-out gap-space-md items-stretch" [style.transform]="trackTransform">
+      <!-- CARD 1: Fluidoterapia Padrão / Reposição -->
+      <div
+        (click)="selectCard(0, 'fluido')"
+        class="carousel-card flex-shrink-0 w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] flex flex-col justify-between bg-surface-container-lowest rounded-xl p-space-lg transition-all duration-300 cursor-pointer"
+        [class.ring-2]="selectedProtocol === 'fluido'"
+        [class.ring-primary]="selectedProtocol === 'fluido'"
+        [class.shadow-md]="selectedProtocol === 'fluido'"
+        [class.shadow-sm]="selectedProtocol !== 'fluido'"
+      >
+        <div class="flex flex-col gap-space-md">
+          <div class="flex items-start justify-between gap-space-sm">
+            <div class="flex flex-col">
+              <span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-label-code text-label-code font-bold w-fit">MODALIDADE #01</span>
+              <h2 class="font-headline-md text-headline-md text-on-surface font-bold mt-2">Fluidoterapia Padrão / Reposição</h2>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-[20px]">water_drop</span>
+            </div>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface-variant">Cálculo de manutenção + reposição de desidratação + perdas contínuas. Suporte volêmico basal.</p>
+          <div class="p-space-sm bg-surface-container-low rounded-lg flex flex-col gap-space-xs">
+            <span class="font-label-code text-label-code text-primary uppercase">Cristaloides / Soluções</span>
+            <span class="font-label-lg text-label-lg text-on-surface font-semibold">Ringer com Lactato • NaCl 0,9% • Glicofisiológico</span>
+          </div>
+          <div class="grid grid-cols-2 gap-space-sm pt-space-xs">
+            <div class="p-space-sm bg-surface-container-high/60 rounded-lg">
+              <span class="font-label-md text-label-md text-secondary block">Taxa p/ Thor (8.5kg)</span>
+              <span class="font-display-metric text-display-metric text-on-surface font-bold">25.5</span>
+              <span class="font-label-code text-label-code text-primary font-semibold">ml/h (3 ml/kg/h)</span>
+            </div>
+            <div class="p-space-sm bg-surface-container-high/60 rounded-lg">
+              <span class="font-label-md text-label-md text-secondary block">Gotejamento (Macro)</span>
+              <span class="font-display-metric text-display-metric text-on-surface font-bold">8.5</span>
+              <span class="font-label-code text-label-code text-primary font-semibold">gotas/min</span>
+            </div>
+          </div>
+          <div class="flex items-start gap-space-xs p-space-sm bg-surface-container-low rounded-lg">
+            <span class="material-symbols-outlined text-[18px] text-primary flex-shrink-0 mt-0.5">info</span>
+            <p class="font-label-md text-label-md text-on-surface-variant">
+              <span class="font-semibold text-on-surface">Indicação Primária:</span> Desidratação leve a moderada e manutenção hemodinâmica perioperatória.
+            </p>
+          </div>
+        </div>
+        <div class="pt-space-md mt-space-md border-t border-surface-container-high flex items-center justify-between">
+          <label class="flex items-center gap-space-sm cursor-pointer w-full" (click)="$event.stopPropagation()">
+            <input
+              type="radio"
+              name="selected_protocol"
+              class="w-5 h-5 accent-primary text-primary focus:ring-primary"
+              [checked]="selectedProtocol === 'fluido'"
+              (change)="selectCard(0, 'fluido')"
+            />
+            <span class="font-label-lg text-label-lg text-on-surface font-semibold select-text">Selecionar este Protocolo</span>
+          </label>
+          <span class="material-symbols-outlined text-primary" [class.hidden]="selectedProtocol !== 'fluido'">check_circle</span>
+        </div>
+      </div>
+
+      <!-- CARD 2: Protocolo MLK -->
+      <div
+        (click)="selectCard(1, 'mlk')"
+        class="carousel-card flex-shrink-0 w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] flex flex-col justify-between bg-surface-container-lowest rounded-xl p-space-lg transition-all duration-300 cursor-pointer"
+        [class.ring-2]="selectedProtocol === 'mlk'"
+        [class.ring-primary]="selectedProtocol === 'mlk'"
+        [class.shadow-md]="selectedProtocol === 'mlk'"
+        [class.shadow-sm]="selectedProtocol !== 'mlk'"
+      >
+        <div class="flex flex-col gap-space-md">
+          <div class="flex items-start justify-between gap-space-sm">
+            <div class="flex flex-col">
+              <div class="flex items-center gap-space-xs">
+                <span class="px-2.5 py-1 rounded-md bg-primary-fixed text-on-primary-fixed font-label-code text-label-code font-bold w-fit">MODALIDADE #02 • CRI VET</span>
+                <span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-code text-label-code">Recomendado Canino</span>
+              </div>
+              <h2 class="font-headline-md text-headline-md text-on-surface font-bold mt-2">Protocolo MLK (Morfina + Lidocaína + Cetamina)</h2>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-[20px]">vaccines</span>
+            </div>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface-variant">Infusão Contínua (CRI) analgésica multimodal de alta eficácia cirúrgica. Bloqueio de receptores NMDA com marcante redução de CAM de anestésicos inalatórios.</p>
+          <div class="p-space-sm bg-surface-container-low rounded-lg flex flex-col gap-space-xs">
+            <span class="font-label-code text-label-code text-primary uppercase">Tríade Farmacológica</span>
+            <span class="font-label-lg text-label-lg text-on-surface font-semibold">Morfina 10mg/ml • Lidocaína 2% • Cetamina 10%</span>
+          </div>
+          <div class="grid grid-cols-2 gap-space-sm pt-space-xs">
+            <div class="p-space-sm bg-primary-fixed/40 rounded-lg">
+              <span class="font-label-md text-label-md text-on-primary-fixed-variant block">Taxa MLK Calculada</span>
+              <span class="font-display-metric text-display-metric text-on-surface font-bold">17.0</span>
+              <span class="font-label-code text-label-code text-primary font-semibold">ml/h em SG5%</span>
+            </div>
+            <div class="p-space-sm bg-primary-fixed/40 rounded-lg">
+              <span class="font-label-md text-label-md text-on-primary-fixed-variant block">Dose Alvo Cetamina</span>
+              <span class="font-display-metric text-display-metric text-on-surface font-bold">0.6</span>
+              <span class="font-label-code text-label-code text-primary font-semibold">mg/kg/h</span>
+            </div>
+          </div>
+          <div class="flex items-start gap-space-xs p-space-sm bg-error-container text-on-error-container rounded-lg">
+            <span class="material-symbols-outlined text-[18px] text-error flex-shrink-0 mt-0.5">warning</span>
+            <p class="font-label-md text-label-md font-medium leading-tight">
+              <span class="font-bold">Restrição de Espécie:</span> Evitar Lidocaína em gatos em altas taxas devido à cardiodepressão e toxicidade do SNC. Indicado estritamente para caninos como Thor.
+            </p>
+          </div>
+        </div>
+        <div class="pt-space-md mt-space-md border-t border-surface-container-high flex items-center justify-between">
+          <label class="flex items-center gap-space-sm cursor-pointer w-full" (click)="$event.stopPropagation()">
+            <input
+              type="radio"
+              name="selected_protocol"
+              class="w-5 h-5 accent-primary text-primary focus:ring-primary"
+              [checked]="selectedProtocol === 'mlk'"
+              (change)="selectCard(1, 'mlk')"
+            />
+            <span class="font-label-lg text-label-lg text-on-surface font-bold select-text">Selecionar este Protocolo</span>
+          </label>
+          <span class="material-symbols-outlined text-primary" [class.hidden]="selectedProtocol !== 'mlk'">check_circle</span>
+        </div>
+      </div>
+
+      <!-- CARD 3: Protocolo FLK -->
+      <div
+        (click)="selectCard(2, 'flk')"
+        class="carousel-card flex-shrink-0 w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] flex flex-col justify-between bg-surface-container-lowest rounded-xl p-space-lg transition-all duration-300 cursor-pointer"
+        [class.ring-2]="selectedProtocol === 'flk'"
+        [class.ring-primary]="selectedProtocol === 'flk'"
+        [class.shadow-md]="selectedProtocol === 'flk'"
+        [class.shadow-sm]="selectedProtocol !== 'flk'"
+      >
+        <div class="flex flex-col gap-space-md">
+          <div class="flex items-start justify-between gap-space-sm">
+            <div class="flex flex-col">
+              <span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-label-code text-label-code font-bold w-fit">MODALIDADE #03 • CRI INTENSIVA</span>
+              <h2 class="font-headline-md text-headline-md text-on-surface font-bold mt-2">Protocolo FLK (Fentanil + Lidocaína + Cetamina)</h2>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-[20px]">syringe</span>
+            </div>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface-variant">Infusão Contínua (CRI) analgésica intensa e rápida para pós-operatório ortopédico e trauma agudo severo. Controle refinado de titulação.</p>
+          <div class="p-space-sm bg-surface-container-low rounded-lg flex flex-col gap-space-xs">
+            <span class="font-label-code text-label-code text-primary uppercase">Tríade Farmacológica Potente</span>
+            <span class="font-label-lg text-label-lg text-on-surface font-semibold">Fentanil 50mcg/ml • Lidocaína 2% • Cetamina 10%</span>
+          </div>
+          <div class="grid grid-cols-2 gap-space-sm pt-space-xs">
+            <div class="p-space-sm bg-surface-container-high/60 rounded-lg">
+              <span class="font-label-md text-label-md text-secondary block">Taxa Sugerida Bomba</span>
+              <span class="font-display-metric text-display-metric text-on-surface font-bold">12.8</span>
+              <span class="font-label-code text-label-code text-primary font-semibold">ml/h (Bomba Peristáltica)</span>
+            </div>
+            <div class="p-space-sm bg-surface-container-high/60 rounded-lg">
+              <span class="font-label-md text-label-md text-secondary block">Fentanil CRI</span>
+              <span class="font-display-metric text-display-metric text-on-surface font-bold">5.0</span>
+              <span class="font-label-code text-label-code text-primary font-semibold">mcg/kg/h</span>
+            </div>
+          </div>
+          <div class="flex items-start gap-space-xs p-space-sm bg-error-container text-on-error-container rounded-lg">
+            <span class="material-symbols-outlined text-[18px] text-error flex-shrink-0 mt-0.5">error</span>
+            <p class="font-label-md text-label-md font-medium leading-tight">
+              <span class="font-bold">Atenção Crítica:</span> Requer monitoramento eletrocardiográfico e capnográfico contínuo. Alerta de depressão respiratória e rigidez torácica.
+            </p>
+          </div>
+        </div>
+        <div class="pt-space-md mt-space-md border-t border-surface-container-high flex items-center justify-between">
+          <label class="flex items-center gap-space-sm cursor-pointer w-full" (click)="$event.stopPropagation()">
+            <input
+              type="radio"
+              name="selected_protocol"
+              class="w-5 h-5 accent-primary text-primary focus:ring-primary"
+              [checked]="selectedProtocol === 'flk'"
+              (change)="selectCard(2, 'flk')"
+            />
+            <span class="font-label-lg text-label-lg text-on-surface font-semibold select-text">Selecionar este Protocolo</span>
+          </label>
+          <span class="material-symbols-outlined text-primary" [class.hidden]="selectedProtocol !== 'flk'">check_circle</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparative Table & Summary Panel -->
+  <div class="flex flex-col bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-md">
+      <div class="flex items-center gap-space-sm">
+        <span class="material-symbols-outlined text-primary text-[22px]">compare_arrows</span>
+        <span class="font-title-md text-title-md text-on-surface font-bold">Painel Comparativo Rápido de Modalidades</span>
+      </div>
+      <span class="font-label-code text-label-code text-secondary">Base de cálculo calibrada para cão adulto (8.5 kg)</span>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="border-b border-surface-container">
+            <th class="py-space-sm font-label-code text-label-code text-secondary font-semibold">Parâmetro de Decisão</th>
+            <th class="py-space-sm px-space-sm font-label-code text-label-code text-on-surface font-bold">Fluidoterapia Reposição</th>
+            <th class="py-space-sm px-space-sm font-label-code text-label-code text-primary font-bold bg-surface-container-low rounded-t-lg">Protocolo MLK (Ativo)</th>
+            <th class="py-space-sm px-space-sm font-label-code text-label-code text-on-surface font-bold">Protocolo FLK</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-container-high/40">
+          <tr>
+            <td class="py-space-sm font-label-md text-label-md text-on-surface-variant font-medium">Objetivo Terapêutico</td>
+            <td class="py-space-sm px-space-sm font-body-md text-body-md text-on-surface">Equilíbrio hidroeletrolítico e volemia</td>
+            <td class="py-space-sm px-space-sm font-body-md text-body-md text-on-surface bg-surface-container-low font-semibold">Analgesia multimodal intra/pós-operatória</td>
+            <td class="py-space-sm px-space-sm font-body-md text-body-md text-on-surface">Analgesia profunda em trauma/ortopedia</td>
+          </tr>
+          <tr>
+            <td class="py-space-sm font-label-md text-label-md text-on-surface-variant font-medium">Equipamento Indicado</td>
+            <td class="py-space-sm px-space-sm font-body-md text-body-md text-on-surface">Bomba volumétrica ou equipo manual</td>
+            <td class="py-space-sm px-space-sm font-body-md text-body-md text-on-surface bg-surface-container-low font-semibold">Bomba peristáltica de precisão</td>
+            <td class="py-space-sm px-space-sm font-body-md text-body-md text-on-surface">Bomba de seringa com infusão micrométrica</td>
+          </tr>
+          <tr>
+            <td class="py-space-sm font-label-md text-label-md text-on-surface-variant font-medium">Segurança Feline</td>
+            <td class="py-space-sm px-space-sm font-body-md text-body-md text-on-surface">Alta (com ajuste volumétrico de 2ml/kg/h)</td>
+            <td class="py-space-sm px-space-sm font-body-md text-body-md text-error bg-surface-container-low font-semibold">Contraindicado / Ajustar Lidocaína</td>
+            <td class="py-space-sm px-space-sm font-body-md text-body-md text-error font-semibold">Contraindicado sem supressão de Lidocaína</td>
+          </tr>
+          <tr>
+            <td class="py-space-sm font-label-md text-label-md text-on-surface-variant font-medium">Redução de Anestésico</td>
+            <td class="py-space-sm px-space-sm font-body-md text-body-md text-on-surface-variant">Nula (apenas estabilidade volêmica)</td>
+            <td class="py-space-sm px-space-sm font-body-md text-body-md text-on-surface bg-surface-container-low font-semibold">CAM reduzido em 30% a 45% (Isoflurano)</td>
+            <td class="py-space-sm px-space-sm font-body-md text-body-md text-on-surface">CAM reduzido em até 50% a 60%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Active Selection Summary & Navigation CTA -->
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-space-md p-space-md lg:p-space-lg bg-surface-container rounded-xl shadow-sm">
+    <div class="flex items-center gap-space-md w-full sm:w-auto">
+      <div class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center flex-shrink-0">
+        <span class="material-symbols-outlined text-[26px]">task_alt</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="font-label-code text-label-code text-primary uppercase">Modalidade Selecionada</span>
+        <span class="font-title-md text-title-md text-on-surface font-bold">{{ selectedProtocolLabel }}</span>
+        <span class="font-label-md text-label-md text-on-surface-variant">Parâmetros prontos para cálculo de frascos e diluição em bolsa de 250ml.</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-space-md w-full sm:w-auto justify-end">
+      <a
+        routerLink="/paciente-vet"
+        class="px-space-md py-2.5 rounded-lg bg-surface-container-highest hover:bg-surface-variant text-on-surface font-label-lg text-label-lg font-medium transition-colors"
+      >
+        Voltar
+      </a>
+      <a
+        routerLink="/protocolo-farmacologico"
+        class="flex items-center gap-space-sm px-space-lg py-2.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg font-semibold shadow-sm transition-all transform active:scale-95"
+      >
+        <span>Prosseguir para Farmacologia</span>
+        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+</div>
