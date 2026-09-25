@@ -2,12 +2,14 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '../../core/services/auth.service';
+import { FormsModule } from '@angular/forms';
 
 type AuthMode = 'login' | 'register';
 
 @Component({
   selector: 'app-acesso-lgpd',
   standalone: true,
+  imports: [FormsModule],
   templateUrl: './acesso-lgpd.component.html',
 })
 export class AcessoLgpdComponent {
