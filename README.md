@@ -1,9 +1,13 @@
-# WebPump Vet — Suite Clínica de Infusão e Diluição Veterinária
+# WebPump By Guilherme Aquino — Site para Infusão e Diluição Veterinária
+
+
 
 Projeto **Angular 17 + TypeScript + Tailwind CSS** que unifica as 4 páginas
 estáticas originais (protótipos HTML/JS isolados) em uma única SPA (Single
 Page Application) navegável, com proteção de rotas e todas as regras de
 negócio/cálculos preservados.
+
+WIP! Alguns recursos ainda não foram completados ou implementados, como login, alarmes etc. Cálculos já se atualizam em tempo real.
 
 ## Páginas / Rotas
 
